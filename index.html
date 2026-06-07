@@ -1,0 +1,976 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>La Hacienda Restaurant | Tonalá, Jalisco</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,700&family=Raleway:wght@400;600;700&display=swap" rel="stylesheet">
+    <style>
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+        :root {
+            --bg:      #0C0906;
+            --bg-2:    #131009;
+            --bg-3:    #1C160D;
+            --dorado:  #C9A84C;
+            --dorado-l:#E2C773;
+            --verde:   #2C4A2E;
+            --crema:   #F5EDD6;
+            --crema-m: rgba(245,237,214,0.6);
+            --terra:   #8B5E3C;
+        }
+
+        html { scroll-behavior: smooth; }
+        body { font-family: 'Raleway', sans-serif; background: var(--bg); color: var(--crema); overflow-x: hidden; }
+        picture { display: block; width: 100%; height: 100%; }
+
+        ::-webkit-scrollbar { width: 5px; }
+        ::-webkit-scrollbar-track { background: var(--bg); }
+        ::-webkit-scrollbar-thumb { background: var(--dorado); border-radius: 3px; }
+
+        /* ── ORNAMENT ── */
+        .ornament {
+            display: flex; align-items: center; gap: 16px; justify-content: center; margin-bottom: 16px;
+        }
+        .ornament::before, .ornament::after {
+            content: ''; flex: 1; max-width: 70px; height: 1px;
+        }
+        .ornament::before { background: linear-gradient(to right, transparent, var(--dorado)); }
+        .ornament::after  { background: linear-gradient(to left,  transparent, var(--dorado)); }
+        .ornament span { color: var(--dorado); font-size: 1rem; }
+
+        /* ── NAVBAR ── */
+        nav {
+            position: fixed; top: 0; width: 100%; z-index: 1000;
+            padding: 26px 64px;
+            display: flex; align-items: center; justify-content: space-between;
+            transition: all 0.4s ease;
+        }
+        nav.scrolled {
+            background: rgba(12,9,6,0.97);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            padding: 16px 64px;
+            border-bottom: 1px solid rgba(201,168,76,0.18);
+        }
+        .nav-logo {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.45rem; font-weight: 600; letter-spacing: 1px;
+            color: var(--crema); text-decoration: none;
+        }
+        .nav-logo span { color: var(--dorado); }
+        .nav-links { display: flex; gap: 36px; list-style: none; }
+        .nav-links a {
+            color: rgba(245,237,214,0.6); text-decoration: none;
+            font-size: 0.76rem; font-weight: 600; letter-spacing: 2.5px;
+            text-transform: uppercase; transition: color 0.3s;
+        }
+        .nav-links a:hover { color: var(--dorado); }
+        .nav-cta {
+            color: var(--dorado) !important;
+            border: 1px solid rgba(201,168,76,0.5) !important;
+            padding: 9px 22px; border-radius: 2px;
+            transition: all 0.3s !important;
+        }
+        .nav-cta:hover { background: var(--dorado) !important; color: var(--bg) !important; }
+
+        /* ── HERO ── */
+        #hero {
+            height: 100vh; position: relative;
+            display: flex; align-items: center; justify-content: center; overflow: hidden;
+        }
+        .hero-bg {
+            position: absolute; inset: 0;
+            background-image:
+                linear-gradient(rgba(0,0,0,0.45), rgba(0,0,0,0.45)),
+                linear-gradient(to bottom, rgba(12,9,6,0.2) 0%, rgba(12,9,6,0.4) 40%, rgba(12,9,6,0.82) 85%, rgba(12,9,6,1) 100%),
+                image-set(url('assets/Exterior.webp') type('image/webp'), url('assets/Exterior.jpg') type('image/jpeg'));
+            background-size: cover; background-position: center;
+            transform: scale(1.06);
+        }
+        .hero-content {
+            position: relative; z-index: 2;
+            text-align: center; padding: 0 40px; max-width: 860px;
+        }
+        .hero-badge {
+            display: inline-block;
+            font-size: 0.72rem; font-weight: 700; letter-spacing: 4px; text-transform: uppercase;
+            color: var(--dorado);
+            border-top: 1px solid rgba(201,168,76,0.4);
+            border-bottom: 1px solid rgba(201,168,76,0.4);
+            padding: 8px 24px; margin-bottom: 28px;
+            opacity: 0; transform: translateY(18px);
+            animation: fadeUp 0.8s ease 0.3s forwards;
+        }
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(3.2rem, 8vw, 7rem); font-weight: 700; line-height: 1.05;
+            color: var(--crema); margin-bottom: 16px;
+            opacity: 0; transform: translateY(30px);
+            animation: fadeUp 0.9s ease 0.5s forwards;
+        }
+        .hero-title em { font-style: italic; color: var(--dorado); }
+        .hero-sub {
+            font-family: 'Playfair Display', serif; font-style: italic;
+            font-size: clamp(1rem, 2.2vw, 1.35rem); color: var(--crema-m);
+            margin-bottom: 48px;
+            opacity: 0; transform: translateY(18px);
+            animation: fadeUp 0.8s ease 0.75s forwards;
+        }
+        .hero-actions {
+            display: flex; gap: 18px; justify-content: center; flex-wrap: wrap;
+            opacity: 0; transform: translateY(18px);
+            animation: fadeUp 0.8s ease 0.95s forwards;
+        }
+        .btn-primary {
+            background: var(--dorado); color: var(--bg);
+            padding: 16px 44px; border: 1px solid var(--dorado); border-radius: 2px;
+            font-family: 'Raleway', sans-serif; font-weight: 700;
+            font-size: 0.8rem; letter-spacing: 2.5px; text-transform: uppercase;
+            text-decoration: none; display: inline-block; transition: all 0.35s ease;
+        }
+        .btn-primary:hover {
+            background: transparent; color: var(--dorado);
+            transform: translateY(-2px); box-shadow: 0 10px 30px rgba(201,168,76,0.22);
+        }
+        .btn-outline {
+            background: transparent; color: var(--crema);
+            padding: 16px 44px; border: 1px solid rgba(245,237,214,0.3); border-radius: 2px;
+            font-family: 'Raleway', sans-serif; font-weight: 600;
+            font-size: 0.8rem; letter-spacing: 2.5px; text-transform: uppercase;
+            text-decoration: none; display: inline-block; transition: all 0.35s ease;
+        }
+        .btn-outline:hover { border-color: var(--dorado); color: var(--dorado); }
+
+        .hero-footer {
+            position: absolute; bottom: 44px; left: 50%; transform: translateX(-50%);
+            display: flex; gap: 52px; white-space: nowrap;
+            opacity: 0; animation: fadeIn 1s ease 1.4s forwards;
+        }
+        .hf-item { text-align: center; }
+        .hf-item strong { display: block; font-size: 0.75rem; color: var(--dorado); letter-spacing: 2px; text-transform: uppercase; margin-bottom: 4px; }
+        .hf-item span { font-size: 0.72rem; color: rgba(245,237,214,0.4); letter-spacing: 1px; }
+        .hf-link { cursor: pointer; text-decoration: none; color: inherit; transition: transform 0.25s ease; }
+        .hf-link:hover { transform: translateY(-4px); }
+        .hf-link:hover strong { color: var(--dorado-l) !important; }
+
+        .scroll-hint {
+            position: absolute; bottom: 28px; right: 64px;
+            opacity: 0; animation: fadeIn 1s ease 1.6s forwards;
+        }
+        .scroll-line {
+            width: 1px; height: 52px;
+            background: linear-gradient(to bottom, var(--dorado), transparent);
+            margin: 0 auto; animation: scrollAnim 2s ease infinite;
+        }
+        @keyframes scrollAnim {
+            0%   { transform: scaleY(0); transform-origin: top; }
+            50%  { transform: scaleY(1); transform-origin: top; }
+            51%  { transform: scaleY(1); transform-origin: bottom; }
+            100% { transform: scaleY(0); transform-origin: bottom; }
+        }
+        @keyframes fadeUp { to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeIn { to { opacity: 1; } }
+
+        /* ── SECTION BASE ── */
+        section { padding: 120px 64px; }
+        .section-tag {
+            font-size: 0.7rem; font-weight: 700; letter-spacing: 5px; text-transform: uppercase;
+            color: var(--dorado); text-align: center; margin-bottom: 12px;
+        }
+        .section-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2.4rem, 4.5vw, 3.8rem); font-weight: 700; line-height: 1.15;
+            text-align: center; color: var(--crema); margin-bottom: 18px;
+        }
+        .section-title em { font-style: italic; color: var(--dorado); }
+        .section-desc {
+            text-align: center; font-size: 0.97rem; color: var(--crema-m);
+            line-height: 1.95; max-width: 580px; margin: 0 auto;
+        }
+
+        /* ── SCROLL REVEAL ── */
+        .reveal {
+            opacity: 0; transform: translateY(48px);
+            transition: opacity 0.8s cubic-bezier(0.25,0.8,0.25,1), transform 0.8s cubic-bezier(0.25,0.8,0.25,1);
+        }
+        .reveal.visible { opacity: 1; transform: translateY(0); }
+        .reveal-left {
+            opacity: 0; transform: translateX(-40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal-left.visible { opacity: 1; transform: translateX(0); }
+        .reveal-right {
+            opacity: 0; transform: translateX(40px);
+            transition: opacity 0.8s ease, transform 0.8s ease;
+        }
+        .reveal-right.visible { opacity: 1; transform: translateX(0); }
+        .d1 { transition-delay: 0.1s; }
+        .d2 { transition-delay: 0.2s; }
+        .d3 { transition-delay: 0.3s; }
+        .d4 { transition-delay: 0.4s; }
+        .d5 { transition-delay: 0.5s; }
+
+        /* ── NOSOTROS ── */
+        #nosotros { background: var(--bg); position: relative; overflow: hidden; }
+        #nosotros::before {
+            content: '';
+            position: absolute; top: 0; left: 0; right: 0; height: 1px;
+            background: linear-gradient(to right, transparent, rgba(201,168,76,0.3), transparent);
+        }
+        .nosotros-inner {
+            max-width: 1100px; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 90px; align-items: center;
+        }
+        .nosotros-text .section-tag,
+        .nosotros-text .section-title { text-align: left; }
+        .nosotros-text .section-title { margin-bottom: 26px; }
+        .nosotros-body {
+            font-size: 1rem; color: var(--crema-m); line-height: 2; margin-bottom: 40px;
+        }
+        .pillars { display: flex; gap: 0; }
+        .pillar {
+            flex: 1; padding: 0 24px 0 20px; border-left: 1px solid rgba(201,168,76,0.3);
+        }
+        .pillar:first-child { padding-left: 0; border-left: none; }
+        .pillar-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 1rem; color: var(--dorado); margin-bottom: 6px;
+        }
+        .pillar-desc { font-size: 0.8rem; color: rgba(245,237,214,0.42); line-height: 1.65; }
+
+        .nosotros-visual { position: relative; }
+        .nosotros-img-frame { border-radius: 3px; overflow: hidden; border: 1px solid rgba(201,168,76,0.12); }
+        .nosotros-img-frame img {
+            width: 100%; height: 520px; object-fit: cover; display: block;
+            transition: transform 0.7s ease;
+        }
+        .nosotros-img-frame:hover img { transform: scale(1.04); }
+        .nosotros-badge {
+            position: absolute; bottom: -18px; left: -18px;
+            background: var(--verde); border: 1px solid rgba(201,168,76,0.28);
+            padding: 18px 26px; border-radius: 3px;
+        }
+        .nosotros-badge strong { display: block; font-family: 'Playfair Display', serif; font-size: 1.5rem; color: var(--dorado); }
+        .nosotros-badge span { font-size: 0.78rem; color: rgba(245,237,214,0.55); letter-spacing: 1px; }
+
+        /* ── MENÚ ── */
+        #menu { background: var(--bg-2); }
+        .menu-header { margin-bottom: 64px; }
+        .menu-grid {
+            display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px;
+            max-width: 1100px; margin: 0 auto;
+        }
+        .menu-card {
+            background: var(--bg-3); border: 1px solid rgba(201,168,76,0.1);
+            border-radius: 3px; overflow: hidden;
+            transition: all 0.45s ease; position: relative;
+        }
+        .menu-card::after {
+            content: '';
+            position: absolute; bottom: 0; left: 0; right: 0; height: 2px;
+            background: linear-gradient(to right, transparent, var(--dorado), transparent);
+            transform: scaleX(0); transition: transform 0.4s ease;
+        }
+        .menu-card:hover {
+            border-color: rgba(201,168,76,0.28);
+            transform: translateY(-12px);
+            box-shadow: 0 32px 80px rgba(0,0,0,0.6);
+        }
+        .menu-card:hover::after { transform: scaleX(1); }
+        .menu-img { overflow: hidden; height: 270px; }
+        .menu-img img {
+            width: 100%; height: 100%; object-fit: cover; display: block;
+            transition: transform 0.7s ease;
+        }
+        .menu-card:hover .menu-img img { transform: scale(1.08); }
+        .menu-body { padding: 30px 28px; }
+        .menu-cat {
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase;
+            color: var(--dorado); margin-bottom: 10px;
+        }
+        .menu-name {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.45rem; color: var(--crema); margin-bottom: 12px; line-height: 1.25;
+        }
+        .menu-desc {
+            font-size: 0.86rem; color: rgba(245,237,214,0.48); line-height: 1.85; margin-bottom: 20px;
+        }
+        .menu-price { font-size: 0.75rem; font-weight: 700; letter-spacing: 2px; color: var(--dorado-l); }
+
+        /* ── GALERÍA ── */
+        #galeria { background: var(--bg); }
+        .gallery-header { margin-bottom: 52px; }
+        .gallery-mosaic {
+            display: grid;
+            grid-template-columns: 7fr 5fr 5fr;
+            grid-template-rows: 560px;
+            gap: 14px;
+            max-width: 1100px; margin: 0 auto;
+        }
+        .gallery-item {
+            position: relative; overflow: hidden;
+            border-radius: 3px; border: 1px solid rgba(201,168,76,0.07);
+        }
+        .gallery-item:first-child { grid-row: 1; }
+        .gallery-item img {
+            width: 100%; height: 100%; object-fit: cover; object-position: center center; display: block;
+            transition: transform 0.7s ease;
+        }
+        /* object-position por imagen para no cortar el sujeto principal */
+        .gallery-item:nth-child(1) img { object-position: center center; }   /* botellas mezcal */
+        .gallery-item:nth-child(2) img { object-position: center 60%; }      /* platillo pescado — centra el plato */
+        .gallery-item:nth-child(3) img { object-position: center center; }   /* botellas mezcal */
+        .gallery-item:hover img { transform: scale(1.06); }
+        .gallery-overlay {
+            position: absolute; inset: 0;
+            background: linear-gradient(to top, rgba(12,9,6,0.5) 0%, transparent 50%);
+            opacity: 0; transition: opacity 0.4s ease;
+        }
+        .gallery-item:hover .gallery-overlay { opacity: 1; }
+
+        /* ── RESERVACIONES ── */
+        #reservaciones { background: var(--bg-2); }
+        .reserv-inner { max-width: 660px; margin: 0 auto; }
+        .reserv-header { margin-bottom: 52px; }
+        .reserv-form { display: flex; flex-direction: column; gap: 20px; }
+        .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .form-group { display: flex; flex-direction: column; gap: 8px; }
+        .form-group label {
+            font-size: 0.65rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--dorado);
+        }
+        .form-group input,
+        .form-group select {
+            background: rgba(245,237,214,0.03);
+            border: 1px solid rgba(201,168,76,0.2);
+            border-radius: 2px; padding: 15px 18px;
+            color: var(--crema); font-family: 'Raleway', sans-serif; font-size: 0.93rem;
+            outline: none; transition: all 0.3s; -webkit-appearance: none;
+        }
+        .form-group input:focus,
+        .form-group select:focus { border-color: var(--dorado); background: rgba(201,168,76,0.04); }
+        .form-group input::placeholder { color: rgba(245,237,214,0.22); }
+        .form-group select option { background: var(--bg-3); }
+        .form-group input[type="date"]::-webkit-calendar-picker-indicator {
+            filter: invert(0.7) sepia(1) hue-rotate(10deg) saturate(4); cursor: pointer;
+        }
+        .reserv-note {
+            font-size: 0.78rem; color: rgba(245,237,214,0.3);
+            text-align: center; margin-top: -8px; line-height: 1.6;
+        }
+
+        /* ── CONTACTO ── */
+        #contacto { background: var(--bg); }
+        #contacto::before {
+            content: '';
+            display: block; width: 100%; height: 1px;
+            background: linear-gradient(to right, transparent, rgba(201,168,76,0.25), transparent);
+            margin-bottom: 0;
+        }
+        .contact-inner {
+            max-width: 1100px; margin: 0 auto;
+            display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: start;
+        }
+        .contact-left .section-tag,
+        .contact-left .section-title { text-align: left; }
+        .contact-items { display: flex; flex-direction: column; gap: 28px; margin-top: 44px; }
+        .contact-item { display: flex; gap: 18px; align-items: flex-start; }
+        .ci-icon {
+            width: 48px; height: 48px; flex-shrink: 0;
+            background: rgba(201,168,76,0.07); border: 1px solid rgba(201,168,76,0.18);
+            border-radius: 2px; display: flex; align-items: center; justify-content: center; font-size: 1.1rem;
+        }
+        .ci-label { font-size: 0.63rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--dorado); margin-bottom: 5px; }
+        .ci-value { font-size: 0.95rem; color: var(--crema-m); line-height: 1.55; }
+        .ci-value a { color: inherit; text-decoration: none; }
+        .ci-value a:hover { color: var(--dorado); }
+
+        .hours-box {
+            background: rgba(201,168,76,0.04);
+            border: 1px solid rgba(201,168,76,0.12);
+            border-radius: 3px; padding: 26px 30px; margin-top: 36px;
+        }
+        .hours-title { font-size: 0.63rem; font-weight: 700; letter-spacing: 3px; text-transform: uppercase; color: var(--dorado); margin-bottom: 18px; }
+        .hours-row {
+            display: flex; justify-content: space-between;
+            padding: 9px 0; border-bottom: 1px solid rgba(245,237,214,0.05);
+            font-size: 0.88rem; color: var(--crema-m);
+        }
+        .hours-row:last-child { border-bottom: none; }
+        .hours-row .highlight { color: var(--dorado); }
+
+        .contact-right { display: flex; flex-direction: column; gap: 24px; margin-top: 0; }
+
+        .map-embed {
+            border-radius: 3px; overflow: hidden;
+            border: 1px solid rgba(201,168,76,0.15);
+            height: 260px;
+        }
+        .map-embed iframe { display: block; width: 100%; height: 100%; border: 0; }
+
+        .cta-box {
+            background: linear-gradient(135deg, rgba(44,74,46,0.35), rgba(201,168,76,0.07));
+            border: 1px solid rgba(201,168,76,0.2);
+            border-radius: 3px; padding: 36px; text-align: center;
+        }
+        .cta-box h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.45rem; color: var(--crema); margin-bottom: 12px;
+        }
+        .cta-box h3 em { font-style: italic; color: var(--dorado); }
+        .cta-box p { font-size: 0.88rem; color: var(--crema-m); line-height: 1.8; margin-bottom: 24px; }
+
+        /* ── FOOTER ── */
+        footer {
+            background: var(--bg-2);
+            border-top: 1px solid rgba(201,168,76,0.1);
+            padding: 38px 64px;
+            display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 14px;
+        }
+        .footer-logo { font-family: 'Playfair Display', serif; font-size: 1.15rem; color: var(--crema); }
+        .footer-logo span { color: var(--dorado); }
+        .footer-copy { font-size: 0.73rem; color: rgba(245,237,214,0.28); }
+
+        /* ── WHATSAPP ── */
+        .wa-float {
+            position: fixed; bottom: 28px; right: 28px;
+            width: 54px; height: 54px; background: #25d366; border-radius: 50%;
+            display: flex; align-items: center; justify-content: center; font-size: 1.45rem;
+            z-index: 9999; box-shadow: 0 6px 24px rgba(37,211,102,0.4);
+            text-decoration: none; animation: waFloat 3s ease infinite;
+            transition: transform 0.3s, opacity 0.3s;
+        }
+        .wa-float:hover { transform: scale(1.1); opacity: 1; }
+        @keyframes waFloat {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-7px); }
+        }
+
+        /* ── HAMBURGER ── */
+        .hamburger {
+            display: none; flex-direction: column; justify-content: center; gap: 5px;
+            cursor: pointer; padding: 6px; background: none; border: none; z-index: 1002;
+        }
+        .hamburger span { display: block; width: 24px; height: 1.5px; background: var(--crema); border-radius: 1px; transition: all 0.35s ease; }
+        .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; transform: scaleX(0); }
+        .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+        /* ── RESPONSIVE 1200px ── */
+        @media (max-width: 1200px) {
+            section { padding: 100px 40px; }
+            nav, nav.scrolled { padding-left: 40px; padding-right: 40px; }
+        }
+
+        /* ── RESPONSIVE 1024px ── */
+        @media (max-width: 1024px) {
+            section { padding: 80px 32px; }
+            nav, nav.scrolled { padding-left: 32px; padding-right: 32px; }
+            .nosotros-inner { grid-template-columns: 1fr; gap: 50px; }
+            .nosotros-text .section-tag, .nosotros-text .section-title { text-align: center; }
+            .nosotros-body { text-align: center; }
+            .pillars { justify-content: center; }
+            .nosotros-badge { display: none; }
+            .nosotros-img-frame img { height: 380px; }
+            .menu-grid { grid-template-columns: 1fr 1fr; gap: 20px; }
+            .menu-img { height: 220px; }
+            .contact-inner { grid-template-columns: 1fr; gap: 50px; }
+            footer { flex-direction: column; text-align: center; }
+        }
+
+        /* ── RESPONSIVE 768px ── */
+        @media (max-width: 768px) {
+            /* Navbar */
+            nav { padding: 16px 20px; }
+            nav.scrolled { padding: 12px 20px; }
+            .hamburger { display: flex; }
+            .nav-links {
+                display: flex; flex-direction: column; position: fixed;
+                top: 0; left: 0; right: 0; background: rgba(12,9,6,0.98);
+                backdrop-filter: blur(24px); -webkit-backdrop-filter: blur(24px);
+                padding: 80px 28px 32px; gap: 4px; z-index: 1000;
+                transform: translateY(-110%);
+                transition: transform 0.38s cubic-bezier(0.4,0,0.2,1);
+                border-bottom: 1px solid rgba(201,168,76,0.15);
+            }
+            .nav-links.open { transform: translateY(0); }
+            .nav-links li a {
+                display: block; padding: 15px 0;
+                border-bottom: 1px solid rgba(245,237,214,0.06);
+                color: rgba(245,237,214,0.8); font-size: 0.85rem;
+            }
+            .nav-links li:last-child a {
+                border-bottom: none; margin-top: 10px;
+                padding: 14px; text-align: center; border-radius: 2px;
+            }
+            /* Hero */
+            #hero { min-height: 100svh; min-height: 100vh; }
+            .hero-content { padding: 0 24px; }
+            .hero-title { font-size: clamp(2.6rem, 11vw, 3.8rem); }
+            .hero-sub { font-size: 1rem; margin-bottom: 32px; }
+            .hero-actions { gap: 12px; }
+            .hero-footer { gap: 14px; flex-wrap: wrap; justify-content: center; bottom: 28px; }
+            .scroll-hint { display: none; }
+            /* Sections */
+            section { padding: 72px 20px; }
+            /* Nosotros */
+            .nosotros-img-frame img { height: 280px; }
+            .pillars { flex-direction: column; gap: 0; }
+            .pillar { border-left: none; border-top: 1px solid rgba(201,168,76,0.2); padding: 18px 0 0 0; }
+            .pillar:first-child { border-top: none; padding-top: 0; }
+            /* Menú */
+            .menu-grid { grid-template-columns: 1fr; }
+            .menu-img { height: 260px; }
+            /* Galería */
+            .gallery-mosaic { grid-template-columns: 1fr; grid-template-rows: auto; }
+            .gallery-item:first-child { grid-row: auto; }
+            .gallery-item { height: 240px; aspect-ratio: unset; }
+            /* Reservaciones */
+            .form-row { grid-template-columns: 1fr; }
+            /* Contacto */
+            .contact-left .section-tag, .contact-left .section-title { text-align: center; }
+            .map-embed { height: 200px; }
+            /* Footer */
+            footer { padding: 28px 20px; }
+            /* WhatsApp móvil: semitransparente para no tapar texto, nítido al tocar */
+            .wa-float { opacity: 0.45; }
+            .wa-float:active { opacity: 1; transform: scale(1.08); }
+        }
+
+        /* ── RESPONSIVE 480px ── */
+        @media (max-width: 480px) {
+            nav { padding: 14px 16px; }
+            section { padding: 60px 16px; }
+            .section-title { font-size: clamp(1.8rem, 9vw, 2.4rem); }
+            /* Hero */
+            .hero-content { padding: 0 20px; }
+            .hero-title { font-size: clamp(2rem, 11vw, 2.8rem); }
+            .hero-badge { font-size: 0.6rem; letter-spacing: 1.5px; padding: 6px 14px; white-space: normal; line-height: 1.6; max-width: calc(100% - 8px); }
+            .hero-sub { font-size: 0.9rem; margin-bottom: 28px; }
+            .hero-actions { flex-direction: column; align-items: center; gap: 12px; }
+            .hero-actions a { width: 100%; max-width: 280px; text-align: center; padding: 15px 20px; }
+            .hero-footer { display: none; }
+            /* Nosotros */
+            .nosotros-img-frame img { height: 220px; }
+            /* Menú */
+            .menu-img { height: 220px; }
+            /* Galería */
+            .gallery-item { height: 240px; aspect-ratio: unset; }
+            /* Contacto */
+            .cta-box { padding: 24px 18px; }
+            .hours-box { padding: 20px 18px; }
+            .contact-items { gap: 22px; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- NAVBAR -->
+<nav id="navbar">
+    <a href="#hero" class="nav-logo">La <span>Hacienda</span></a>
+    <ul class="nav-links" id="navLinks">
+        <li><a href="#nosotros">Nosotros</a></li>
+        <li><a href="#menu">Carta</a></li>
+        <li><a href="#galeria">Galería</a></li>
+        <li><a href="#reservaciones">Reservaciones</a></li>
+        <li><a href="#contacto" class="nav-cta">Reservar Mesa</a></li>
+    </ul>
+    <button class="hamburger" id="hamburger" aria-label="Menú">
+        <span></span><span></span><span></span>
+    </button>
+</nav>
+
+<!-- HERO -->
+<section id="hero">
+    <div class="hero-bg" id="heroBg"></div>
+
+    <div class="hero-content" id="heroContent">
+        <div class="hero-badge">Tonalá, Jalisco &nbsp;·&nbsp; Cocina Tradicional Mexicana</div>
+        <h1 class="hero-title">La <em>Hacienda</em><br>Restaurant</h1>
+        <p class="hero-sub">Sabores auténticos de México en el corazón de Tonalá</p>
+        <div class="hero-actions">
+            <a href="#reservaciones" class="btn-primary">Reservar Mesa</a>
+            <a href="#menu" class="btn-outline">Ver la Carta</a>
+        </div>
+    </div>
+
+    <div class="hero-footer">
+        <a href="https://maps.google.com/?q=Tonalá,+Jalisco,+México" target="_blank" rel="noopener" class="hf-item hf-link">
+            <strong>📍 Ubicación</strong>
+            <span>Tonalá, Jalisco</span>
+        </a>
+        <div class="hf-item hf-link" role="button" tabindex="0" onclick="document.querySelector('#contacto').scrollIntoView({behavior:'smooth'})">
+            <strong>🕐 Horario</strong>
+            <span>Lun – Dom &nbsp;8am – 10pm</span>
+        </div>
+        <div class="hf-item hf-link" role="button" tabindex="0" onclick="document.querySelector('#menu').scrollIntoView({behavior:'smooth'})">
+            <strong>💰 Desde $35 MXN</strong>
+            <span>por persona</span>
+        </div>
+    </div>
+
+    <div class="scroll-hint"><div class="scroll-line"></div></div>
+</section>
+
+<!-- NOSOTROS -->
+<section id="nosotros">
+    <div class="nosotros-inner">
+        <div class="nosotros-text">
+            <div class="section-tag reveal">Nuestra Historia</div>
+            <h2 class="section-title reveal d1">Tradición que<br><em>se saborea</em></h2>
+            <p class="nosotros-body reveal d2">
+                En La Hacienda Restaurant celebramos la riqueza de la cocina mexicana de siempre.
+                Cada platillo nace de recetas auténticas, ingredientes frescos elegidos con cuidado
+                y la calidez de una cocina hecha con pasión. Somos el lugar donde la familia se reúne,
+                los eventos se vuelven memorables y los sabores de México cobran vida en cada mesa.
+            </p>
+            <div class="pillars reveal d3">
+                <div class="pillar">
+                    <div class="pillar-title">Tradición</div>
+                    <div class="pillar-desc">Recetas auténticas de la cocina mexicana</div>
+                </div>
+                <div class="pillar">
+                    <div class="pillar-title">Frescura</div>
+                    <div class="pillar-desc">Ingredientes seleccionados cada día</div>
+                </div>
+                <div class="pillar">
+                    <div class="pillar-title">Calidez</div>
+                    <div class="pillar-desc">Ambiente para toda la familia</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="nosotros-visual reveal-right">
+            <div class="nosotros-img-frame">
+                <picture>
+                    <source srcset="assets/Tacos.webp" type="image/webp">
+                    <img src="assets/Tacos.jpg" alt="La Hacienda Restaurant — cocina tradicional mexicana" loading="lazy" width="800" height="1200">
+                </picture>
+            </div>
+            <div class="nosotros-badge">
+                <strong>Desde $35 MXN</strong>
+                <span>por persona</span>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- MENÚ DESTACADO -->
+<section id="menu">
+    <div class="menu-header">
+        <div class="section-tag reveal">Nuestra Carta</div>
+        <div class="ornament reveal d1"><span>✦</span></div>
+        <h2 class="section-title reveal d2">Platillos <em>Destacados</em></h2>
+        <p class="section-desc reveal d3" style="margin-top:14px;">
+            Una selección de nuestros platillos más queridos, preparados con el alma de la cocina mexicana tradicional.
+        </p>
+    </div>
+
+    <div class="menu-grid">
+        <div class="menu-card reveal d1">
+            <div class="menu-img">
+                <picture>
+                    <source srcset="assets/Preparacion%20Tacos.webp" type="image/webp">
+                    <img src="assets/Preparacion%20Tacos.jpg" alt="Tacos de la Casa — La Hacienda" loading="lazy" width="800" height="533">
+                </picture>
+            </div>
+            <div class="menu-body">
+                <div class="menu-cat">Antojitos Mexicanos</div>
+                <h3 class="menu-name">Tacos de la Casa</h3>
+                <p class="menu-desc">Tortillas de maíz recién hechas a mano, rellenas con los mejores guisos de la casa. Servidos con salsa verde, roja y todos los complementos tradicionales.</p>
+                <div class="menu-price">Desde $35 MXN</div>
+            </div>
+        </div>
+
+        <div class="menu-card reveal d2">
+            <div class="menu-img">
+                <picture>
+                    <source srcset="assets/Chile%20en%20nogada.webp" type="image/webp">
+                    <img src="assets/Chile%20en%20nogada.jpg" alt="Chile en Nogada — La Hacienda" loading="lazy" width="800" height="1200">
+                </picture>
+            </div>
+            <div class="menu-body">
+                <div class="menu-cat">Platillo de Temporada</div>
+                <h3 class="menu-name">Chile en Nogada</h3>
+                <p class="menu-desc">Chile poblano relleno de picadillo de res con frutas de temporada, cubierto con nogada cremosa, granada y perejil. El orgullo de la cocina mexicana.</p>
+                <div class="menu-price">Desde $180 MXN</div>
+            </div>
+        </div>
+
+        <div class="menu-card reveal d3">
+            <div class="menu-img">
+                <picture>
+                    <source srcset="assets/Pozole.webp" type="image/webp">
+                    <img src="assets/Pozole.jpg" alt="Pozole Rojo — La Hacienda" loading="lazy" width="800" height="533">
+                </picture>
+            </div>
+            <div class="menu-body">
+                <div class="menu-cat">Sopas &amp; Caldos</div>
+                <h3 class="menu-name">Pozole Rojo</h3>
+                <p class="menu-desc">Caldo reconfortante de maíz cacahuazintle con carnes seleccionadas, servido con tostadas, lechuga, rábano, orégano y limón. Tradición en cada cucharada.</p>
+                <div class="menu-price">Desde $135 MXN</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- GALERÍA -->
+<section id="galeria">
+    <div class="gallery-header">
+        <div class="section-tag reveal">Nuestro Espacio</div>
+        <div class="ornament reveal d1"><span>✦</span></div>
+        <h2 class="section-title reveal d2">Vive el <em>Ambiente</em></h2>
+        <p class="section-desc reveal d3" style="margin-top:14px;">
+            Un espacio cálido y elegante donde la tradición mexicana se respira en cada rincón.
+        </p>
+    </div>
+
+    <div class="gallery-mosaic">
+        <div class="gallery-item reveal-left">
+            <picture>
+                <source srcset="assets/Interior.webp" type="image/webp">
+                <img src="assets/Interior.jpg" alt="Interior La Hacienda Restaurant" loading="lazy" width="1200" height="1123">
+            </picture>
+            <div class="gallery-overlay"></div>
+        </div>
+        <div class="gallery-item reveal d1">
+            <picture>
+                <source srcset="assets/Interior%201.webp" type="image/webp">
+                <img src="assets/Interior%201.jpg" alt="Interior La Hacienda Restaurant" loading="lazy" width="800" height="1202">
+            </picture>
+            <div class="gallery-overlay"></div>
+        </div>
+        <div class="gallery-item reveal d2">
+            <picture>
+                <source srcset="assets/Interior%202.webp" type="image/webp">
+                <img src="assets/Interior%202.jpg" alt="Interior La Hacienda Restaurant" loading="lazy" width="800" height="1200">
+            </picture>
+            <div class="gallery-overlay"></div>
+        </div>
+    </div>
+</section>
+
+<!-- RESERVACIONES -->
+<section id="reservaciones">
+    <div class="reserv-inner">
+        <div class="reserv-header">
+            <div class="section-tag reveal">Haz tu Reservación</div>
+            <div class="ornament reveal d1"><span>✦</span></div>
+            <h2 class="section-title reveal d2">Reserva tu <em>Mesa</em></h2>
+            <p class="section-desc reveal d3" style="margin-top:14px;">
+                Asegura tu lugar y disfruta de la mejor experiencia gastronómica en Tonalá.
+            </p>
+        </div>
+
+        <form class="reserv-form reveal d2" onsubmit="handleReserv(event)">
+            <div class="form-group">
+                <label for="r-nombre">Nombre completo</label>
+                <input type="text" id="r-nombre" name="nombre" placeholder="Tu nombre" required>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="r-fecha">Fecha</label>
+                    <input type="date" id="r-fecha" name="fecha" required>
+                </div>
+                <div class="form-group">
+                    <label for="r-personas">Número de personas</label>
+                    <select id="r-personas" name="personas" required>
+                        <option value="">Seleccionar</option>
+                        <option>1 persona</option>
+                        <option>2 personas</option>
+                        <option>3 personas</option>
+                        <option>4 personas</option>
+                        <option>5 personas</option>
+                        <option>6 personas</option>
+                        <option>7 – 10 personas</option>
+                        <option>Más de 10 (evento privado)</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="r-horario">Horario preferido</label>
+                <select id="r-horario" name="horario">
+                    <option value="">Seleccionar horario</option>
+                    <option>Desayuno (8:00 – 12:00)</option>
+                    <option>Comida (13:00 – 17:00)</option>
+                    <option>Cena (18:00 – 22:00)</option>
+                </select>
+            </div>
+
+            <button type="submit" class="btn-primary"
+                style="border:none;cursor:pointer;width:100%;font-size:0.8rem;letter-spacing:2.5px;padding:18px;">
+                Solicitar Reservación →
+            </button>
+            <p class="reserv-note">Te confirmaremos tu reservación por teléfono o email &nbsp;·&nbsp; 33 3612-4480</p>
+        </form>
+    </div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+    <div class="contact-inner">
+        <div class="contact-left">
+            <div class="section-tag reveal">Encuéntranos</div>
+            <h2 class="section-title reveal d1">Visítanos <em>Pronto</em></h2>
+
+            <div class="contact-items">
+                <div class="contact-item reveal d1">
+                    <div class="ci-icon">📍</div>
+                    <div>
+                        <div class="ci-label">Ubicación</div>
+                        <div class="ci-value">Tonalá, Jalisco, México</div>
+                    </div>
+                </div>
+                <div class="contact-item reveal d2">
+                    <div class="ci-icon">📞</div>
+                    <div>
+                        <div class="ci-label">Teléfono</div>
+                        <div class="ci-value"><a href="tel:3336124480">33 3612-4480</a></div>
+                    </div>
+                </div>
+                <div class="contact-item reveal d3">
+                    <div class="ci-icon">✉️</div>
+                    <div>
+                        <div class="ci-label">Email</div>
+                        <div class="ci-value"><a href="mailto:contacto@lahacienda.mx">contacto@lahacienda.mx</a></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hours-box reveal d4">
+                <div class="hours-title">Horario de Atención</div>
+                <div class="hours-row">
+                    <span>Lunes – Domingo</span>
+                    <span class="highlight">8:00 am – 10:00 pm</span>
+                </div>
+                <div class="hours-row">
+                    <span>Desayunos</span>
+                    <span>8:00 – 12:00</span>
+                </div>
+                <div class="hours-row">
+                    <span>Comidas</span>
+                    <span>13:00 – 17:00</span>
+                </div>
+                <div class="hours-row">
+                    <span>Cenas</span>
+                    <span>18:00 – 22:00</span>
+                </div>
+                <div class="hours-row">
+                    <span>Eventos privados</span>
+                    <span>Previa reservación</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="contact-right reveal-right">
+            <div class="map-embed">
+                <iframe
+                    src="https://maps.google.com/maps?q=Tonalá,+Jalisco,+México&t=&z=14&ie=UTF8&iwloc=&output=embed"
+                    allowfullscreen="" loading="lazy"
+                    referrerpolicy="no-referrer-when-downgrade"
+                    title="Tonalá, Jalisco — La Hacienda Restaurant">
+                </iframe>
+            </div>
+
+            <div class="cta-box">
+                <h3>¿Tienes un evento <em>especial</em>?</h3>
+                <p>Contamos con espacios para eventos privados: cumpleaños, reuniones familiares y celebraciones. Contáctanos para crear una experiencia a tu medida.</p>
+                <a href="tel:3336124480" class="btn-primary">Llamar Ahora</a>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <div class="footer-logo">La <span>Hacienda</span> Restaurant</div>
+    <div class="footer-copy">© 2026 La Hacienda Restaurant &nbsp;·&nbsp; Tonalá, Jalisco &nbsp;·&nbsp; Todos los derechos reservados</div>
+    <div class="footer-copy">contacto@lahacienda.mx &nbsp;·&nbsp; 33 3612-4480</div>
+</footer>
+
+<!-- WhatsApp flotante -->
+<a href="https://wa.me/523336124480" class="wa-float" target="_blank" rel="noopener" title="WhatsApp La Hacienda">
+    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="28" height="28" fill="white" aria-hidden="true">
+        <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+    </svg>
+</a>
+
+<script>
+    // ── NAVBAR ──
+    const nav = document.getElementById('navbar');
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.getElementById('navLinks');
+
+    window.addEventListener('scroll', () => {
+        nav.classList.toggle('scrolled', window.scrollY > 60);
+    }, { passive: true });
+
+    hamburger.addEventListener('click', () => {
+        const open = navLinks.classList.toggle('open');
+        hamburger.classList.toggle('open', open);
+    });
+
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+        link.addEventListener('click', function(e) {
+            const target = document.querySelector(this.getAttribute('href'));
+            if (!target) return;
+            e.preventDefault();
+            navLinks.classList.remove('open');
+            hamburger.classList.remove('open');
+            const top = target.getBoundingClientRect().top + window.scrollY - nav.offsetHeight;
+            window.scrollTo({ top, behavior: 'smooth' });
+        });
+    });
+
+    document.addEventListener('click', (e) => {
+        if (!nav.contains(e.target) && navLinks.classList.contains('open')) {
+            navLinks.classList.remove('open');
+            hamburger.classList.remove('open');
+        }
+    });
+
+    // ── SCROLL REVEAL ──
+    const revealObs = new IntersectionObserver((entries) => {
+        entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.1, rootMargin: '0px 0px -40px 0px' });
+    document.querySelectorAll('.reveal, .reveal-left, .reveal-right').forEach(el => revealObs.observe(el));
+
+    // ── PARALLAX HERO ──
+    const heroBg = document.getElementById('heroBg');
+    const heroContent = document.getElementById('heroContent');
+    let ticking = false;
+    window.addEventListener('scroll', () => {
+        if (window.innerWidth <= 768 || ticking) return;
+        ticking = true;
+        requestAnimationFrame(() => {
+            const s = window.scrollY;
+            if (heroBg) heroBg.style.transform = `scale(1.06) translateY(${s * 0.18}px)`;
+            if (heroContent) {
+                heroContent.style.transform = `translateY(${s * 0.22}px)`;
+                heroContent.style.opacity = Math.max(0, 1 - s / 580);
+            }
+            ticking = false;
+        });
+    }, { passive: true });
+
+    // ── FORM RESERVACIONES ──
+    function handleReserv(e) {
+        e.preventDefault();
+        const btn = e.target.querySelector('button[type="submit"]');
+        const orig = btn.textContent;
+        btn.textContent = '✓ Solicitud recibida — Te contactaremos pronto';
+        btn.style.cssText = 'background:var(--verde);border-color:var(--verde);color:var(--crema);';
+        setTimeout(() => {
+            btn.textContent = orig;
+            btn.style.cssText = '';
+            e.target.reset();
+        }, 4000);
+    }
+</script>
+
+</body>
+</html>
