@@ -22,7 +22,7 @@
             --terra:   #8B5E3C;
         }
 
-        html { scroll-behavior: smooth; }
+        html { scroll-behavior: smooth; overflow-x: hidden; }
         body { font-family: 'Raleway', sans-serif; background: var(--bg); color: var(--crema); overflow-x: hidden; }
         picture { display: block; width: 100%; height: 100%; }
 
@@ -510,6 +510,11 @@
                 border-bottom: none; margin-top: 10px;
                 padding: 14px; text-align: center; border-radius: 2px;
             }
+            /* Reveal: evita desplazamiento horizontal fuera del viewport */
+            .reveal-left,
+            .reveal-right { transform: translateY(48px); }
+            .reveal-left.visible,
+            .reveal-right.visible { transform: translateY(0); }
             /* Hero */
             #hero { min-height: 100svh; min-height: 100vh; }
             .hero-content { padding: 0 24px; }
